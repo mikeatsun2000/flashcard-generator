@@ -56,8 +56,8 @@ function getAppIcon(name, appurl) {
   favicon(appurl, (err, iconUrl)=>{
 
     if (err) {
-      App.log('error');
-      throw err;
+      App.log(err);
+      //give feedback
     } else {
       App.log(iconUrl);
       let data = '';
@@ -80,9 +80,12 @@ function getAppIcon(name, appurl) {
           }
           //App.log(iElement.style);
           //iElement.style.backgroundImage = 'url(data:image/x-icon;base64,' + iconData + ')'
-          iElement.style.background = 'rgba(0, 0, 0, 0) url("' + iconUrl + '") no-repeat left top)';
+          iElement.style.background = 'rgba(0, 0, 0, 0) url("' + iconUrl + '") no-repeat 0px 0px)';
           iElement.style.backgroundImage = 'url("' + iconUrl + '")';
-
+          iElement.style.backgroundOrigin = 'padding-box';
+          iElement.style.backgroundPosition = '0px 0px';
+          iElement.style.backgroundPositionX = '0px';
+          iElement.style.backgroundPositionY = '0px';
           // <a> element
           const aElement = document.createElement('a');
           aElement.setAttribute('href', '#');
