@@ -53,59 +53,44 @@ const App = {
 
 
 function getAppIcon(name, appurl) {
-  favicon(appurl, (err, iconUrl)=>{
+    favicon(appurl, (err, iconUrl)=>{
 
     if (err) {
       App.log(err);
-      //give feedback
+      //TODO - give feedback
     } else {
-      App.log(iconUrl);
-      let data = '';
-      http.get(iconUrl, (res) => {
-        let buf = Buffer('', 'utf8');
-        res.on('data', (buf)=> {
-          data += buf.toString();
-        });
-        
-        res.on('end', ()=> {
-          //construct listiem
-          // <i> element
-          const iconData = (new Buffer(data)).toString('base64');
-          const iElement = document.createElement('i');
-        
-          for (propName in appitem_style) {
-            if (appitem_style.hasOwnProperty(propName)) {
-              iElement.style[propName] = appitem_style[propName];
-            }
-          }
-          //App.log(iElement.style);
-          //iElement.style.backgroundImage = 'url(data:image/x-icon;base64,' + iconData + ')'
-          iElement.style.background = 'rgba(0, 0, 0, 0) url("' + iconUrl + '") no-repeat 0px 0px)';
-          iElement.style.backgroundImage = 'url("' + iconUrl + '")';
-          iElement.style.backgroundOrigin = 'padding-box';
-          iElement.style.backgroundPosition = '0px 0px';
-          iElement.style.backgroundPositionX = '0px';
-          iElement.style.backgroundPositionY = '0px';
-          // <a> element
-          const aElement = document.createElement('a');
-          aElement.setAttribute('href', '#');
-          aElement.setAttribute('app-url', appurl);
-        
-          aElement.appendChild(iElement);
-          aElement.appendChild(document.createTextNode(name));
-          //App.log(aElement.innerHTML)
-
-          // <li> item
-          const liElement = document.createElement('li');
-          liElement.appendChild(aElement);
-          //App.log(liElement.innerHTML);
-
-          document.getElementById('sidebar').appendChild(liElement);
-
-        });
-
        
-      });
+      //construct listiem
+      // <i> element
+      const iElement = document.createElement('i');
+    
+      for (propName in appitem_style) {
+        if (appitem_style.hasOwnProperty(propName)) {
+          iElement.style[propName] = appitem_style[propName];
+        }
+      }
+      
+      iElement.style.background = 'rgba(0, 0, 0, 0) url("' + iconUrl + '") no-repeat 0px 0px)';
+      iElement.style.backgroundImage = 'url("' + iconUrl + '")';
+      iElement.style.backgroundOrigin = 'padding-box';
+      iElement.style.backgroundPosition = '0px 0px';
+      iElement.style.backgroundPositionX = '0px';
+      iElement.style.backgroundPositionY = '0px';
+
+      // <a> element
+      const aElement = document.createElement('a');
+      aElement.setAttribute('href', '#');
+      aElement.setAttribute('app-url', appurl);
+    
+      aElement.appendChild(iElement);
+      aElement.appendChild(document.createTextNode(name));
+
+      // <li> item
+      const liElement = document.createElement('li');
+      liElement.appendChild(aElement);
+
+      //document.getElementById('sidebar').appendChild(liElement);
+      $(liElement).insertBefore($('#applist-end'));
     }
   });
 }
