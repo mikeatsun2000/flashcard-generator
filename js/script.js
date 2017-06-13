@@ -29,7 +29,7 @@ const App = {
   },
   
   // change folder for sidebar links
-  cd: function (anchor) {
+  activate: function (anchor) {
     anchor = $(anchor);
 
     $('#sidebar li').removeClass('active');
@@ -38,16 +38,12 @@ const App = {
     anchor.closest('li').addClass('active');
     anchor.find('i').addClass('icon-white');
 
-    this.setPath(anchor.attr('nw-path'));
+    this.setApp(anchor.attr('app-url'));
   },
 
   // set path for file explorer
-  setPath: function (path) {
-    if (path.indexOf('~') == 0) {
-      path = path.replace('~', process.env['HOME']);
-    }
-    this.folder.open(path);
-    this.addressbar.set(path);
+  setApp: function (url) {
+    $('#app-container').attr('src', url);
   }
 };
 
@@ -81,15 +77,20 @@ function getAppIcon(name, appurl) {
       const aElement = document.createElement('a');
       aElement.setAttribute('href', '#');
       aElement.setAttribute('app-url', appurl);
-    
       aElement.appendChild(iElement);
       aElement.appendChild(document.createTextNode(name));
+
+
+     $(aElement).on('click', function (event) {
+        event.preventDefault();
+        App.activate(aElement);
+     });
+     
 
       // <li> item
       const liElement = document.createElement('li');
       liElement.appendChild(aElement);
 
-      //document.getElementById('sidebar').appendChild(liElement);
       $(liElement).insertBefore($('#applist-end'));
     }
   });
@@ -116,17 +117,20 @@ $(document).ready(function() {
     } else {
       shell.openItem(mime.path);
     }
-  });
+  });00000
 
   addressbar.on('navigate', function(dir) {
     folder.open(dir);
   });
   */
   // sidebar favorites
-  $('[nw-path]').bind('click', function (event) {
+  /*
+  $('[app-url]').on('click', function (event) {
+    App.log('clicked');
     event.preventDefault();
-    App.cd(this);
+    App.activate(this);
   });
+  */
 });
 
 
