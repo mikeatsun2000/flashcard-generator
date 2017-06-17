@@ -7,7 +7,7 @@
 <link href = 'index.css' rel='stylesheet'>
 
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
     <ul class="nav nav-list" id="sidebar">
       <li class="nav-header">Apps</li>
       <li class="active" >
-        <a href="#"  nw-path="~/">'<i id = 'template' class="icon-white icon-home"></i> Home</a>
+        <a href="#"  id = 'home-item'  app-url ="home.html">'<i id = 'template' class="icon-white icon-home"></i> Home</a>
       </li>
       <li class="nav-header" id = 'applist-end' >Menu</li>
       <li><a href="#" nw-call="about" onclick="App.about()"><i class="icon-flag"></i> About</a></li>
@@ -24,10 +24,10 @@
   </div>
 
   <div style="float: left; position: absolute; left: 210px; right: 0; top: 0; bottom: 50px">
-    
+  
     <div class="row" style="background: #FFF; -webkit-border-radius: 2px; margin: -5px 1px 0 -19px; height: 100%; overflow: hidden; ">
       
-      <iframe src = 'file:///home/mike/projects/flashcard-generator/home.html' id = 'app-container'   frameborder = '0'
+      <iframe src = 'home.html' id = 'app-container'   frameborder = '0'
           style= 'position: relative; height: 100%; width: 100%;'>
       </iframe>
 
