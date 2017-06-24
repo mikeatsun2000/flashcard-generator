@@ -26,7 +26,8 @@
   ],
   "dependencies": {
     "electron-debug": "^1.0.0",
-    "favicon": "0.0.2"
+    "favicon": "0.0.2",
+    "jsdom": "^11.0.0"
   },
   "devDependencies": {
     "devtron": "^1.1.0",
