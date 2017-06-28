@@ -3,7 +3,9 @@
 const http = require('http');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const {log, printStackTrace , DEBUG, INFO, WARN} = require('./log');
+
+const Logger = require('./log');
+const logger = new Logger('js/domfilter.js');
 
 class Domfilter {
 
@@ -18,9 +20,9 @@ class Domfilter {
     }
 }
 
+
 function requestHandler(request, response)  {  
-    
-    log('handling -- ' + request.url);
+    logger.log('url = ' + request.url);
     if (request.url.startsWith('/translate/')) {
         const phrase = request.url.substring(11);
         loadAndTrim('http://www.spanishdict.com/translate/' + phrase, response);
@@ -83,8 +85,8 @@ function loadAndTrim(url, response) {
 
                     response.end(dom.serialize());
                 }).catch((e)=> {
-                    log(e.message + ' --' + url);
-                    printStackTrace(e);
+                    logger.log(e.message + ' --' + url);
+                    logger.printStackTrace(e);
                 }); 
 }     
 

@@ -4,6 +4,11 @@ const app = electron.app;
 const ipcMain = electron.ipcMain;
 const clipboard = electron.clipboard;
 
+const console = require('console');
+const mainConsole= new console.Console(process.stdout, process.stderr);
+
+const Logger = require('./js/log');
+const logger = new Logger('index.js');
 
 
 // adds debug features like hotkeys for triggering dev tools and reload
@@ -71,10 +76,18 @@ ipcMain.on('show-translate-dialog', (event, arg) => {
 });
 
 ipcMain.on('dismiss-translate-dialog', (event, arg)=> {
-	console.log('arg=' + arg);
+	logger.log('arg=' + arg);
+
 	if (arg != "") {
 		mainWindow.webContents.send('load-translate-phrase', arg);
 	}
 	translateWindow.close();
 	translateWindow = null;
+});
+
+/* Support logging from renderer process */
+
+ipcMain.on('log-message', (event, arg) => {
+	logger.log('got here');
+	mainConsole.log(arg);
 });

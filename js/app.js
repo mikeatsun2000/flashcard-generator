@@ -5,10 +5,11 @@ const {remote, ipcRenderer,clipboard} = require('electron');
 const {Menu, BrowserWindow, MenuItem, shell} = remote;
 const http = require('http');
 const {normalize} = require('path');
-const {log, printStackTrace , DEBUG, INFO, WARN} = require('./js/log');
+const Logger = require('./js/log');
 const Domfilter = require('./js/domfilter');
 const appitem_style = require('./js/appitem_style');
 
+const logger = new Logger('js/app.js');
 
 class App {
 
@@ -55,7 +56,7 @@ class App {
     favicon(appurl, (err, iconUrl)=>{
 
       if (err) {
-        log(err);
+        logger.log(err.message);
         //TODO - give feedback
       } else {
         
