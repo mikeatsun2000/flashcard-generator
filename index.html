@@ -16,7 +16,6 @@
   const app = new App();
   
   require('electron').ipcRenderer.on('load-translate-phrase', (event, arg)=> {
-    alert('http://localhost:3001/translate/' + arg);
     $('#app-container').attr('src' , 'http://localhost:3001/translate/' + arg);
   });
 
