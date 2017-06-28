@@ -9,7 +9,6 @@ class Domfilter {
 
     
     constructor(port) {
-        log('domfilter ctor');
         this.server = http.createServer(requestHandler);
         this.server.listen(port, 'localhost');
     }
@@ -22,30 +21,11 @@ class Domfilter {
 function requestHandler(request, response)  {  
     
     log('handling -- ' + request.url);
-    if (request.url.startsWith('/lookup/')) {
-        const phrase = request.url.substring(8);
+    if (request.url.startsWith('/translate/')) {
+        const phrase = request.url.substring(11);
         loadAndTrim('http://www.spanishdict.com/translate/' + phrase, response);
-
-        /*
-        
-        JSDOM.fromURL('http://www.spanishdict.com/translate/' + phrase , options).then((dom) => {
-                const body = dom.window.document.getElementsByTagName('body')[0]
-                const contentContainer = dom.window.document.getElementsByClassName('content-container')[0];
-                const mainContainer = dom.window.document.getElementsByClassName('main-container')[0];
-                removeChildren(body, ['content-container']);
-                removeChildren(contentContainer, ['main-container']);
-                removeChildren(mainContainer, ['translate']);
-
-                response.end(dom.serialize());
-            }).catch((e)=> {
-                alert(e.message);
-            }); 
-         */
       
-    } else if  (request.url.startsWith('/examples')) {
-        const phrase = request.url(substring(9));
-        loadAndTrim('http://www.spanishdict.com/translate/' + phrase);
-    }
+    } 
 }
 
 function spliceBetween(str, toinsert, start, end) {
@@ -91,16 +71,20 @@ function loadAndTrim(url, response) {
                     const contentContainer = dom.window.document.getElementsByClassName('content-container')[0];
                     const mainContainer = dom.window.document.getElementsByClassName('main-container')[0];
                     const translateContainer = dom.window.document.getElementsByClassName('translate')[0]
+                    const cardContainer = dom.window.document.getElementsByClassName('card')[0];
+                    const navElement =  dom.window.document.getElementsByClassName('nav-content')[0];
+
                     removeChildren(body, ['content-container']);
                     removeChildren(contentContainer, ['main-container']);
                     removeChildren(mainContainer, ['translate']);
                     removeChildren(translateContainer, ['card']);
 
+                    cardContainer.removeChild(navElement);
+
                     response.end(dom.serialize());
                 }).catch((e)=> {
                     log(e.message + ' --' + url);
                     printStackTrace(e);
-                    alert(e.stack);
                 }); 
 }     
 
