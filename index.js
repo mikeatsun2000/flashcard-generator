@@ -1,12 +1,17 @@
 const electron = require('electron');
 
 const app = electron.app;
+const ipcMain = electron.ipcMain;
+const clipboard = electron.clipboard;
+
+
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
 // prevent window being garbage collected
 let mainWindow;
+let translateWindow;
 
 function onClosed() {
 	// dereference the window
@@ -40,4 +45,36 @@ app.on('activate', () => {
 
 app.on('ready', () => {
 	mainWindow = createMainWindow();
+});
+
+ipcMain.on('show-translate-dialog', (event, arg) => {
+
+	const params = {toolbar: false, 
+					parent:mainWindow, 
+					modal:true,
+					frame: false, 
+					resizable: true, 
+					show: false, 
+					height: 190, 
+					width: 360};
+					
+	translateWindow = new electron.BrowserWindow(params);
+	translateWindow.loadURL('file://' + __dirname + '/translate.html');
+	translateWindow.once('ready-to-show', () => {
+			translateWindow.show();
+		});
+
+	translateWindow.webContents.on('did-finish-load', () => {
+		translateWindow.webContents.send('clipboard-content', clipboard.readText());
+	})
+  
+});
+
+ipcMain.on('dismiss-translate-dialog', (event, arg)=> {
+	console.log('arg=' + arg);
+	if (arg != "") {
+		mainWindow.webContents.send('load-translate-phrase', arg);
+	}
+	translateWindow.close();
+	translateWindow = null;
 });
