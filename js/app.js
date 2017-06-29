@@ -109,13 +109,14 @@ $(document).ready(function() {
   const iframe_height = document.getElementById('app-container').offsetHeight;
   const iframe_width = document.getElementById('app-container').offsetWidth;
 
+  logger.log(`height = ${iframe_height}  width = ${iframe_width}`);
   $('#home-item').click((event)=>{
         event.preventDefault();
         App.activate(document.getElementById('home-item'));
   });
 
   App.addApp('Duolingo', 'http://www.duolingo.com/');
-  App.addApp('Fluencia', 'http://www.fluencia.com');  
+  App.addApp('Fluencia', 'https://app.fluencia.com/');  
   
 
 });
