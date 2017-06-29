@@ -78,7 +78,7 @@ function loadAndTrim(url, response) {
 
                     removeChildren(body, ['content-container']);
                     removeChildren(contentContainer, ['main-container']);
-                    removeChildren(mainContainer, ['translate']);
+                    removeChildren(mainContainer, ['translate', 'conjugation']);
                     removeChildren(translateContainer, ['card']);
 
                     cardContainer.removeChild(navElement);
