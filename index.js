@@ -88,6 +88,5 @@ ipcMain.on('dismiss-translate-dialog', (event, arg)=> {
 /* Support logging from renderer process */
 
 ipcMain.on('log-message', (event, arg) => {
-	logger.log('got here');
 	mainConsole.log(arg);
 });
