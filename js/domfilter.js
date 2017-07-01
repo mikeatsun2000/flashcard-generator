@@ -27,7 +27,11 @@ function requestHandler(request, response)  {
         const phrase = request.url.substring(11);
         loadAndTrim('http://www.spanishdict.com/translate/' + phrase, response);
       
-    } 
+    } else if (request.url.startsWith('/conjugate/')) {
+        const phrase = request.url.substring(11);
+        loadAndTrim('http://www.spanishdict.com/conjugate/' + phrase, response);
+
+    }
 }
 
 function spliceBetween(str, toinsert, start, end) {
@@ -41,6 +45,7 @@ function spliceBetween(str, toinsert, start, end) {
 }
 
 function removeChildren(container, excludedClasses) {
+    logger.log(container);
     const containerChildren = container.children;
     const l = containerChildren.length;
     let nodesToRemove = [];
@@ -74,18 +79,31 @@ function loadAndTrim(url, response) {
                     const mainContainer = dom.window.document.getElementsByClassName('main-container')[0];
                     const translateContainer = dom.window.document.getElementsByClassName('translate')[0]
                     const cardContainer = dom.window.document.getElementsByClassName('card')[0];
-                    const navElement =  dom.window.document.getElementsByClassName('nav-content')[0];
 
                     removeChildren(body, ['content-container']);
                     removeChildren(contentContainer, ['main-container']);
                     removeChildren(mainContainer, ['translate', 'conjugation']);
-                    removeChildren(translateContainer, ['card']);
 
-                    cardContainer.removeChild(navElement);
+                    if (translateContainer) {
+                        removeChildren(translateContainer, ['card', ['tab-content']]) ;
+                    }
+                
+                    const navElements = dom.window.document.getElementsByClassName('nav-content');
+                    if (navElements) {
+                        const l = navElements.length;
+                        for (var i = 0; i < l; i++) {
+                            const parent = navElements[i].parentElement;
+                            parent.removeChild(navElements[i]);
+                        }
+                    }
+                    
+                    //cardContainer.removeChild(navElement);
+                    
 
                     response.end(dom.serialize());
                 }).catch((e)=> {
-                    logger.log(e.message + ' --' + url);
+                    logger.log(e.message);
+                    logger.log(url);
                     logger.printStackTrace(e);
                 }); 
 }     
