@@ -70,7 +70,7 @@ ipcMain.on('show-translate-dialog', (event, arg) => {
 		});
 
 	translateWindow.webContents.on('did-finish-load', () => {
-		translateWindow.webContents.send('clipboard-content', clipboard.readText());
+		translateWindow.webContents.send('clipboard-content', clipboard.readText('selection'));
 	})
   
 });
