@@ -104,22 +104,5 @@ class App {
 
 
 
-$(document).ready(function() {
-  //const d = new Domfilter(3001);
-  const iframe_height = document.getElementById('app-container').offsetHeight;
-  const iframe_width = document.getElementById('app-container').offsetWidth;
-
-  logger.log(`height = ${iframe_height}  width = ${iframe_width}`);
-  $('#home-item').click((event)=>{
-        event.preventDefault();
-        App.activate(document.getElementById('home-item'));
-  });
-
-  App.addApp('Duolingo', 'http://www.duolingo.com/');
-  App.addApp('Fluencia', 'https://app.fluencia.com/');  
-  
-
-});
-
 
 module.exports = App;
