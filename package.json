@@ -1,7 +1,7 @@
 {
   "name": "flashcard-generator",
   "productName": "FlashcardGenerator",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "My tremendous app",
   "license": "MIT",
   "repository": "mikeatsun2000@gmail.com/flashcard-generator",
@@ -27,6 +27,7 @@
   "dependencies": {
     "electron-debug": "^1.0.0",
     "favicon": "0.0.2",
+    "jquery": "^3.2.1",
     "jsdom": "^11.0.0"
   },
   "devDependencies": {
