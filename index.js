@@ -17,6 +17,8 @@ require('electron-debug')();
 // prevent window being garbage collected
 let mainWindow;
 let translateWindow;
+let addEditWindow;
+
 
 function onClosed() {
 	// dereference the window
@@ -73,17 +75,58 @@ ipcMain.on('show-translate-dialog', (event, arg) => {
 		translateWindow.webContents.send('clipboard-content', clipboard.readText('selection'));
 	})
   
+
 });
 
-ipcMain.on('dismiss-translate-dialog', (event, arg)=> {
-	logger.log('arg=' + arg);
-
-	if (arg != "") {
-		mainWindow.webContents.send('load-translate-phrase', arg);
+ipcMain.on('dismiss-translate-dialog', (event, arg) => {
+	if (!(arg === "")) {
+		 mainWindow.webContents.send('load-translate-phrase', arg);
 	}
+
 	translateWindow.close();
 	translateWindow = null;
+
 });
+
+
+
+ipcMain.on('show-addedit-dialog', (event, arg) => {
+	logger.log('showing addeditapp dialog');
+	const params = {toolbar: false, 
+					parent:mainWindow, 
+					modal:true,
+					frame: false, 
+					resizable: true, 
+					show: false, 
+					height: 190, 
+					width: 360};
+			
+	let url = 'file://' + __dirname + '/addedit.html';
+	if (arg) /*edit dialog*/	{
+		url += ('?id=' + arg['id'] + '&name=' + arg['name'] + '&url=' + arg['url']);
+	}
+	logger.log('url=' + url);
+
+	addEditWindow = new electron.BrowserWindow(params);
+	addEditWindow.loadURL(url);
+	addEditWindow.once('ready-to-show', () => {
+		addEditWindow.show();
+	});
+});
+
+
+
+ipcMain.on('dismiss-addedit-dialog', (event, arg)=> {
+	logger.log('dismiss-addedit-dialog - arg=' + arg);
+
+	if (arg != "") {
+		mainWindow.webContents.send('load-addedit-args', arg);
+	}
+	addEditWindow.close();
+	addEditWindow = null;
+});
+
+
 
 /* Support logging from renderer process */
 

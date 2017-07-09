@@ -7,18 +7,19 @@ const http = require('http');
 const {normalize} = require('path');
 const Logger = require('./js/log');
 const Domfilter = require('./js/domfilter');
-const appitem_style = require('./js/appitem_style');
-
+const appItemStyle= require('./js/appitem-style');
 const logger = new Logger('js/app.js');
 
-class App {
+let domfilter = new Domfilter(3001);
+let activeApp = 'home';
+let activeUrl = 'home.html';
 
-  constructor() {
-    this.domfilter = new Domfilter(3001);
-  }
-  
+App =  {
+
+  activeApp: 'home',
+  activeUrl: 'home.html',
   // show "about" window
-  static about() {
+  about: function() {
     const params = {toolbar: false, resizable: false, show: true, height: 150, width: 400};
     const aboutWindow = new BrowserWindow(params);
 
@@ -27,14 +28,14 @@ class App {
     //alert('file://' + directory + '/about.html');
 
     aboutWindow.loadURL('file://' + __dirname + '/about.html');
-  }
+  },
 
-  static translate() {
+  translate: function(params) {
     ipcRenderer.send('show-translate-dialog', 'ping');
-  }
+  },
 
   // change application for sidebar link
-  static activate(anchor) {
+  activate: function(anchor) {
     anchor = $(anchor);
 
     $('#sidebar li').removeClass('active');
@@ -43,17 +44,38 @@ class App {
     anchor.closest('li').addClass('active');
     anchor.find('i').addClass('icon-white');
 
-    App.setApp(anchor.attr('app-url'));
-  }
+    this.setApp(anchor.attr('name'), anchor.attr('app-url'));
+  },
 
-  // set path for file explorer
-  static setApp(url) {
-    $('#app-container').attr('src', url);
-  }
+  
+  setApp: function(name, url) {    
+    if (this.activeApp != name) {
+      this.activeApp = name;
+      this.activeUrl = url;
+      $('#app-view').attr('src', url);
+    }
 
-  static addApp(name, appurl) {
+    $('#app-view').removeClass('hide' );3
+    $('#dict-view').addClass('hide');
+    $('#button-bar').hide();
+    
+  },
 
-    favicon(appurl, (err, iconUrl)=>{
+  addAppItem: function() {
+    ipcRenderer.send('show-addedit-dialog');
+  },
+
+  editAppItem:  function(name, url) {
+    const id = 'id-' + name.replace(/ /g, '-');
+    logger.log('in App.editApp id=' + id);
+    ipcRenderer.send('show-addedit-dialog', {'id': id,'name': name, 'url': url});
+  }, 
+
+  addApp: function(args) {
+    const name = args['name'];
+    const appUrl = args['url'];
+
+    favicon(appUrl, (err, iconUrl)=>{
 
       if (err) {
         logger.log(err.message);
@@ -63,13 +85,16 @@ class App {
         //construct listiem
         // <i> element
         const iElement = document.createElement('i');
+      
 
+        
         let propName;
-        for (propName in appitem_style) {
-          if (appitem_style.hasOwnProperty(propName)) {
-            iElement.style[propName] = appitem_style[propName];
+        for (propName in appItemStyle) {
+          if (appItemStyle.hasOwnProperty(propName)) {
+            iElement.style[propName] = appItemStyle[propName];
           }
         }
+        
         
         iElement.style.background = 'rgba(0, 0, 0, 0) url("' + iconUrl + '") no-repeat 0px 0px)';
         iElement.style.backgroundImage = 'url("' + iconUrl + '")';
@@ -81,12 +106,11 @@ class App {
         // <a> element
         const aElement = document.createElement('a');
         aElement.setAttribute('href', '#');
-        aElement.setAttribute('app-url', appurl);
+        aElement.setAttribute('app-url', appUrl);
+        aElement.setAttribute('name', name);
         aElement.appendChild(iElement);
-        aElement.appendChild(document.createTextNode(name));
-
-
-      $(aElement).on('click', function (event) {
+        aElement.appendChild(document.createTextNode(name)); 
+        $(aElement).on('click', function (event) {
           event.preventDefault();
           App.activate(aElement);
       });
@@ -94,13 +118,54 @@ class App {
     
         // <li> item
         const liElement = document.createElement('li');
+        liElement.setAttribute('id', 'id-' + name);
+        liElement.className = "context-menu-editapp"
         liElement.appendChild(aElement);
 
         $(liElement).insertBefore($('#applist-end'));
      }
     });
+  },
+
+  editApp: function(args) {
+    //logger.log('editApp -- name = ' + args['name']);
+    //logger.log('editApp -- url = ' + args['url']);
+    //logger.log('editApp -- id = ' + args['id']);
+
+    const liElement = document.getElementById(args['id']);
+    liElement.setAttribute('id', 'id-' + args['name'].replace(/ /g, "-"));
+    
+    const aElement = liElement.firstChild;
+    aElement.setAttribute('name', args['name']);
+    aElement.setAttribute('app-url',args['url']);
+
+    aElement.childNodes[1].textContent = args['name'];
+
+  },
+
+
+  deleteAppItem: function(element) {
+    element.parentNode.removeChild(element);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

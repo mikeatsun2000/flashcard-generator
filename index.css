@@ -17,7 +17,8 @@ body {
 header {
 	position: absolute;
 	width: 500px;
-	height: 250px;
+	height: 250p
+	x;
 	top: 50%;
 	left: 50%;
 	margin-top: -125px;
@@ -31,3 +32,71 @@ header h1 {
 	margin: 0;
 	padding: 0;
 }
+
+ webview {
+    display:inline-flex;
+    width:688px;
+    height:580px;
+  }
+ webview.hide {
+    flex: 0 1;
+    width: 688px;
+    height: 580px;
+  }
+
+#webview-container {
+    width: 688px;
+    height:580px;
+    position:relative;
+}
+
+#app-view {
+    width: 100%;
+    height:100%;
+}
+
+#dict-view {
+	width: 0px;
+	height: 0px;
+}
+
+#button-bar {
+    position:absolute;
+    top:0;
+	right:0;
+    float:right;
+    width:20%;
+    height:40px;
+	display:none;
+    
+}
+
+#button1 {
+	top: 0;
+	float:left;
+	height:100%;
+	width: 33%;
+	margin-top:5px;
+	margin-right:5px;
+	position:relative;
+	display:inherit;
+	background-color: green;
+}
+
+#button2 {
+	top: 0;
+	float:left;
+	height:100%;
+	width:33%;
+	margin-top:5px;
+	margin-left:5px;
+	position:relative;
+	display:inherit;
+	background-color:blue;
+
+	
+}
+
+
+
+

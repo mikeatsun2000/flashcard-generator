@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+3<!DOCTYPE html>
 <html>
 <head>
 <title>Flashcard Generator</title>
@@ -9,23 +9,50 @@
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
 
+<link rel="stylesheet" href="https://swisnl.github.io/jQuery-contextMenu/css/screen.css" type="text/css"/>
+<link rel="stylesheet" href="https://swisnl.github.io/jQuery-contextMenu/css/theme.css" type="text/css"/>
+<link rel="stylesheet" href="https://swisnl.github.io/jQuery-contextMenu/css/theme-fixes.css" type="text/css"/>
+<!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">-->
+<link href="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
+<script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.ui.position.min.js" type="text/javascript"></script>
+<script src="https://swisnl.github.io/jQuery-contextMenu/js/main.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script type="text/javascript" src="js/app.js"></script>
 <script type="text/javascript" src="js/domfilter.js"></script>
+<script type="text/javascript" src="js/log.js"></script>
 </head>
 
 <script>
  
-
-  const app = new App();
+  const indexLogger = new (require('./js/log'))('index.html');
   
   require('electron').ipcRenderer.on('load-translate-phrase', (event, arg)=> {
-    $('#app-container').attr('src' , 'http://localhost:3001/translate/' + arg);
+
+      indexLogger.log('load-translate-phrase received, arg = ' +arg);
+      $('#dict-view').attr('src' , 'http://localhost:3001/translate/' + arg);
+      $('#button-bar').show();
+      $('#dict-view').removeClass('hide' );
+      $('#app-view').addClass('hide');
+  
+  });
+
+  require('electron').ipcRenderer.on('load-addedit-args', (event, arg) => {
+    indexLogger.log('load-addedit-args received, arg = ' +arg);
+    if (arg['id']) {
+      App.editApp(arg)
+    } else {
+      App.addApp(arg);
+    }
   });
 
 </script>
+
 
 <body>
 <div style="position: absolute; left: 10px; right: 10px; top: 10px; bottom: 10px;">
@@ -33,22 +60,36 @@
     <ul class="nav nav-list" id="sidebar">
       <li class="nav-header">Apps</li>
       <li class="active" >
-        <a href="#"  id = 'home-item'  app-url ="home.html">'<i id = 'template' class="icon-white icon-home"></i> Home</a>
-      </li>
+  <a href="#"  id = 'home-item'  name = 'home' app-url ="home.html">'<i id = 'template' class="icon-white icon-home"></i>Home </a>
+      </li> 
+     
       <li class="nav-header" id = 'applist-end' >Menu</li>
-      <li><a href="#" nw-call="about" onclick="App.about()"><i class="fa fa-flag"></i>About</a></li>
-      <li><a href='#' nw-call='translate' onclick="App.translate()"<i class="fa fa-book"></i>Translate</a></li>
-      
+      <li>
+          <a href='#' id = 'add-item' onclick = 'App.addAppItem()'><i class = 'fa fa-plus'></i>&nbsp;Add App</a></li>
+      </li>
+      <li><a href='#' nw-call='translate' onclick="App.translate()"<i class="fa fa-book"></i>&nbsp;Translate</a></li> 
+      <li><a href="#" nw-call="about" onclick="App.about()"><i class=" fa fa-flag"></i>&nbsp;About</a></li>
+     
     </ul>
   </div>
 
   <div style="float: left; position: absolute; left: 210px; right: 0; top: 0; bottom: 0">
   
     <div class="row" style="background: #FFF; -webkit-border-radius: 2px; margin: -5px 1px 0 -19px; height: 100%; overflow: hidden; ">
-      
-      <iframe src = 'home.html' id = 'app-container'   frameborder = '0'
-          style= 'position: relative; height: 580px; width: 688px;'>
-      </iframe>
+      <div id = 'webview-container'>
+        <webview src = 'home.html' class = 'viewer' id = 'app-view'   frameborder = '0'
+            style= 'position: relative; height: 580px; width: 688px;'>
+        </webview>
+        <webview src = '' class = 'viewer' id = 'dict-view'   frameborder = '0'
+            style= 'position: relative; height: 580px; width: 688px;'>
+        </webview>
+        <div id='button-bar'>
+          <div id = 'button1' onclick = 'button1Handler();'>1</div>
+          <div id = 'button2'>2</div>
+        
+
+        </div>
+      </dlv>
 
   </div>
 </div>
@@ -57,21 +98,53 @@
 </body>
 
 <script>
-$(document).ready(function() {
-  const iframe_height = document.getElementById('app-container').offsetHeight;
-  const iframe_width = document.getElementById('app-container').offsetWidth;
 
-  logger.log(`height = ${iframe_height}  width = ${iframe_width}`);
+function button1Handler() {
+  App.setApp(App.activeApp, App.activeUrl);
+}
+
+
+$(document).ready(function() {
+
   $('#home-item').click((event)=>{
         event.preventDefault();
         App.activate(document.getElementById('home-item'));
   });
+  
+  
+$.contextMenu({
+        selector: '.context-menu-editapp', 
+        callback: function(key, options) {
+            logger.log('key=' + key);
+            const liId = $(this).get(0).getAttribute('id');
+            const liElement = document.getElementById(liId);
 
-  App.addApp('Duolingo', 'http://www.duolingo.com/');
-  App.addApp('Fluencia', 'https://app.fluencia.com/');  
+            if (key === 'edit') {
+             
+              const aElement = liElement.firstChild;
+              const name = aElement.getAttribute('name');
+              const url = aElement.getAttribute('app-url');
+              logger.log('name=' + name + ' url=' +url);
+              App.editAppItem(name, url);
+            } else if (key === 'delete') {
+              App.deleteAppItem(liElement);
+            }
+        },
+
+        items: {
+            "edit": {name: "Edit", icon: "edit"} ,
+            "delete": {name:"Delete", icon: "delete"}
+        }
+     });
+
+  });
+
+
+  App.addApp({name: 'Duolingo', url: 'http://www.duolingo.com/'});
+  App.addApp({name:'Fluencia', url:'https://app.fluencia.com/'});  
   
 
-});
+
 </script>
 
 </html>
