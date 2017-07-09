@@ -13,12 +13,17 @@
    <link rel="stylesheet" href="css/dialog.css">
   
   <script>
+    const Logger = require('./js/log');
     const ipcRenderer = require('electron').ipcRenderer;
-    ipcRenderer.on('clipboard-content', (event, message) => {
+
+    logger = new Logger('./js/translate');
+    
+    require('electron').ipcRenderer.on('clipboard-content', (event, message) => {
             $('#phrase').val(message);
     });
 
     var okHandler = function() {
+
         ipcRenderer.send('dismiss-translate-dialog', $('#phrase').val());
     };
 
