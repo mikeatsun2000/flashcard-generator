@@ -9,6 +9,7 @@ const ipcRenderer = electron.ipcRenderer;
 
 
 class Logger {
+    
     constructor(filename, defaultLevel) {
         this.filename = filename;
         if (defaultLevel) {
@@ -44,7 +45,7 @@ class Logger {
         }
 
         if (level >= this.defaultLevel) {
-            this.writer(this.filename + '\n' + mess + '\n\n');
+            this.writer(new Date().toString() + ' : ' + this.filename + ' : ' + mess );
         }
     }
 
