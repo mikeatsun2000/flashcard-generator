@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Add App Dialog</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+
+   <link rel="stylesheet" href="css/dialog.css">
+  
+  <script>
+    const Logger = require('./js/log');
+    const logger = (new Logger('addedit.html'));
+    let params;
+
+    let url;
+    $(function() {
+        logger.log('location.href=' + location.href);
+        const { URL } = require('url');
+        url = new URL(location.href);
+        
+
+        logger.log('id=' + url.searchParams.get('id') + 
+                   ' name=' + url.searchParams.get('name') +
+                   ' url=' + url.searchParams.get('url'));
+
+        if (url.searchParams.get('id')) {
+            $('#dialog-title').text('Edit App');
+            $('#app-name').val(url.searchParams.get('name'));
+            $('#app-url').val(url.searchParams.get('url'));
+        } 
+        
+    });
+
+
+    var okHandler = function() {
+        logger.log('okHandler');
+        const args = {'name':$('#app-name').val(), 'url':$('#app-url').val() };
+        if ( url.searchParams.get('id')) {
+            args['id'] =  url.searchParams.get('id');
+        }
+        require('electron').ipcRenderer.send('dismiss-addedit-dialog', 
+                                             args)
+    };
+
+    var cancelHandler = function() {
+        logger.log('cancelHandler');
+        require('electron').ipcRenderer.send('dismiss-addedit-dialog', "");
+    };
+        
+</script>
+
+</head>
+<body>
+<div id="dialog">
+	<div id="dialog-bg">
+       	<div id="dialog-title">Add App</div>
+           <div id="dialog-description">
+             <div>
+                <label for = 'app-name'>Name</label>
+                <input type='text' id='app-name'></input>
+             </div>
+             <div>
+                <label for = 'app-url'>URL&nbsp;</label>
+                <input type='text' id='app-url'></input>
+             </div>
+           </div>
+
+		<!-- Buttons, both options close the window in this demo -->
+        <div id="dialog-buttons">
+           <a href="#" id = 'ok-button' class="large green button" onclick = 'okHandler();' >OK</a>
+           <a href="#" id = 'cancel-button' class="large red button" onclick = 'cancelHandler();'>Cancel</a>
+		</div>
+	</div>	
+</div>
+
+</body>
+</html>
