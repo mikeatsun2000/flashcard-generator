@@ -45,7 +45,7 @@ function spliceBetween(str, toinsert, start, end) {
 }
 
 function removeChildren(container, excludedClasses) {
-    logger.log(container);
+
     const containerChildren = container.children;
     const l = containerChildren.length;
     let nodesToRemove = [];
