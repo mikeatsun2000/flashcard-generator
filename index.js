@@ -133,3 +133,6 @@ ipcMain.on('dismiss-addedit-dialog', (event, arg)=> {
 ipcMain.on('log-message', (event, arg) => {
 	mainConsole.log(arg);
 });
+
+
+
