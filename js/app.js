@@ -7,10 +7,13 @@ const http = require('http');
 const {normalize} = require('path');
 const Logger = require('./js/log');
 const Domfilter = require('./js/domfilter');
+const Database =  require('./js/db');
 const appItemStyle= require('./js/appitem-style');
 const logger = new Logger('js/app.js');
 
 let domfilter = new Domfilter(3001);
+let db = new Database(__dirname + '/db/')
+
 let activeApp = 'home';
 let activeUrl = 'home.html';
 
@@ -79,29 +82,22 @@ App =  {
 
       if (err) {
         logger.log(err.message);
-        //TODO - give feedback
       } else {
         
         //construct listiem
         // <i> element
-        const iElement = document.createElement('i');
-      
-
-        
-        let propName;
-        for (propName in appItemStyle) {
-          if (appItemStyle.hasOwnProperty(propName)) {
-            iElement.style[propName] = appItemStyle[propName];
-          }
-        }
-        
-        
+        const iElement = document.createElement('i');      
         iElement.style.background = 'rgba(0, 0, 0, 0) url("' + iconUrl + '") no-repeat 0px 0px)';
         iElement.style.backgroundImage = 'url("' + iconUrl + '")';
         iElement.style.backgroundOrigin = 'padding-box';
         iElement.style.backgroundPosition = '0px 0px';
         iElement.style.backgroundPositionX = '0px';
         iElement.style.backgroundPositionY = '0px';
+
+        iElement.style.display = 'inline-block';
+        iElement.style.width = '14px';
+        iElement.style.height = '14px';
+        iElement.style.lineHeight = '14px';
 
         // <a> element
         const aElement = document.createElement('a');
@@ -110,62 +106,91 @@ App =  {
         aElement.setAttribute('name', name);
         aElement.appendChild(iElement);
         aElement.appendChild(document.createTextNode(name)); 
+
         $(aElement).on('click', function (event) {
           event.preventDefault();
           App.activate(aElement);
-      });
+        });
 
     
         // <li> item
         const liElement = document.createElement('li');
-        liElement.setAttribute('id', 'id-' + name);
+        liElement.setAttribute('id', 'id-' + name.replace(/ /g, "-"));
         liElement.className = "context-menu-editapp"
         liElement.appendChild(aElement);
 
-        $(liElement).insertBefore($('#applist-end'));
-     }
+        db.addApp(name, appUrl, $(liElement).html(), (err, doc)=> { 
+            if (err) {
+              logger.log(err.message);
+            } else {
+              $(liElement).insertBefore($('#applist-end'));
+            }
+        });
+      };
+    });
+  },
+
+  loadApps: function() {
+    db.loadApps((err, docs)=> {
+      docs.forEach(
+        (doc) => {
+            const liItem = $('<li></li>')
+               .addClass('context-menu-editapp')
+               .attr('id', 'id-' + doc['name'])
+               .html(doc['html']);
+
+               const aElement = $(":first-child", liItem);
+               aElement.on('click', (event) => {
+                  event.preventDefault();
+                   App.activate(aElement.get(0));
+                });
+
+               liItem.insertBefore($('#applist-end'));
+
+        });
     });
   },
 
   editApp: function(args) {
-    //logger.log('editApp -- name = ' + args['name']);
-    //logger.log('editApp -- url = ' + args['url']);
-    //logger.log('editApp -- id = ' + args['id']);
+  
+    const element = $('#' + args['id']);
+    const clonedElement = element.clone(true);
+    clonedElement.attr('id', 'id-' + args['name'].replace(/ /g, "-"))
+  
+    const anchorElement = $(":first-child", clonedElement);
+    anchorElement.attr('name' , args['name']).
+                  attr('app-url', args['url']);
+  
+    anchorElement[0].childNodes[1].textContent =  args['name'];
 
-    const liElement = document.getElementById(args['id']);
-    liElement.setAttribute('id', 'id-' + args['name'].replace(/ /g, "-"));
-    
-    const aElement = liElement.firstChild;
-    aElement.setAttribute('name', args['name']);
-    aElement.setAttribute('app-url',args['url']);
-
-    aElement.childNodes[1].textContent = args['name'];
-
+    db.editApp(element.attr('name'), 
+               args['name'], 
+               args['url'], 
+               clonedElement.html(),
+               (err, numAffected, affectedDocuments, upsert) => {
+                  if (!err) {
+                     element.replaceWith(clonedElement);
+                  } else {
+                    logger.log(err.message);
+                  }
+               });
   },
 
 
   deleteAppItem: function(element) {
-    element.parentNode.removeChild(element);
+    db.deleteApp(element.firstChild.getAttribute('name') , (err, numRemoved) => {
+        logger.log('name=' + element.firstChild.getAttribute("name"));
+        logger.log('err=' + err);
+        logger.log('numRemoved' + numRemoved);
+        if (err) {
+          logger.log(err.message);
+        } else if (numRemoved > 0) {
+           element.parentNode.removeChild(element);
+        }
+    });
+   
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
