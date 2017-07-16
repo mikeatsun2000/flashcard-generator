@@ -4,7 +4,7 @@
 <title>Flashcard Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href = 'index.css' rel='stylesheet'>
+
 
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -23,6 +23,8 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href = 'index.css' rel='stylesheet'>
+
 <script type="text/javascript" src="js/app.js"></script>
 <script type="text/javascript" src="js/domfilter.js"></script>
 <script type="text/javascript" src="js/log.js"></script>
@@ -56,36 +58,36 @@
 
 <body>
 <div style="position: absolute; left: 10px; right: 10px; top: 10px; bottom: 10px;">
-  <div class="well" style="float: left; width: 160px; padding: 8px;">
+  <div class="well" style="float: left; width: 210px; padding: 8px;">
     <ul class="nav nav-list" id="sidebar">
       <li class="nav-header">Apps</li>
       <li class="active" >
-  <a href="#"  id = 'home-item'  name = 'home' app-url ="home.html"><i id = 'template' class="icon-white fa fa-home"*></i>Home </a>
+  <a href="#"  id = 'home-item'  name = 'home' app-url ="home.html"><i id = 'template' class="icon-white fa fa-home"*></i>&nbsp;Home </a>
       </li> 
      
       <li class="nav-header" id = 'applist-end' >Menu</li>
       <li>
           <a href='#' id = 'add-item' onclick = 'App.addAppItem()'><i class = 'fa fa-plus'></i>&nbsp;Add App</a></li>
       </li>
-      <li><a href='#' nw-call='translate' onclick="App.translate()"<i class="fa fa-book"></i>&nbsp;Translate</a></li> 
-      <li><a href="#" nw-call="about" onclick="App.about()"><i class=" fa fa-flag"></i>&nbsp;About</a></li>
+      <li><a href='#'  onclick="App.translate()"><i class="fa fa-book"></i>&nbsp;Translate</a></li> 
+      <li><a href="#"  onclick="App.about()"><i class="fa fa-flag"></i>&nbsp;About</a></li>
      
     </ul>
   </div>
 
-  <div style="float: left; position: absolute; left: 210px; right: 0; top: 0; bottom: 0">
+  <div style="float: left; position: absolute; left: 245px; right: 0; top: 0; bottom: 0">
   
     <div class="row" style="background: #FFF; -webkit-border-radius: 2px; margin: -5px 1px 0 -19px; height: 100%; overflow: hidden; ">
       <div id = 'webview-container'>
         <webview src = 'home.html' class = 'viewer' id = 'app-view'   frameborder = '0'
-            style= 'position: relative; height: 580px; width: 688px;'>
+            style= 'position: relative; height: 790px; width: 950px;'>
         </webview>
         <webview src = '' class = 'viewer' id = 'dict-view'   frameborder = '0'
-            style= 'position: relative; height: 580px; width: 688px;'>
+            style= 'position: relative; height: 790px; width: 950px;'>
         </webview>
         <div id='button-bar'>
           <div id = 'button1' onclick = 'button1Handler();'>1</div>
-          <div id = 'button2'>2</div>
+          <div id = 'button2'><img src = 'img/download.png'</div>
         
 
         </div>

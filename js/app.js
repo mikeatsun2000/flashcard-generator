@@ -8,7 +8,6 @@ const {normalize} = require('path');
 const Logger = require('./js/log');
 const Domfilter = require('./js/domfilter');
 const Database =  require('./js/db');
-const appItemStyle= require('./js/appitem-style');
 const logger = new Logger('js/app.js');
 
 let domfilter = new Domfilter(3001);
@@ -95,9 +94,9 @@ App =  {
         iElement.style.backgroundPositionY = '0px';
 
         iElement.style.display = 'inline-block';
-        iElement.style.width = '14px';
-        iElement.style.height = '14px';
-        iElement.style.lineHeight = '14px';
+        iElement.style.width = '18px';
+        iElement.style.height = '18px';
+        iElement.style.lineHeight = '18px';
 
         // <a> element
         const aElement = document.createElement('a');
@@ -105,7 +104,7 @@ App =  {
         aElement.setAttribute('app-url', appUrl);
         aElement.setAttribute('name', name);
         aElement.appendChild(iElement);
-        aElement.appendChild(document.createTextNode(name)); 
+        aElement.appendChild(document.createTextNode(' ' + name)); 
 
         $(aElement).on('click', function (event) {
           event.preventDefault();

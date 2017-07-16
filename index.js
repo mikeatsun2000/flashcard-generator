@@ -28,8 +28,8 @@ function onClosed() {
 
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
-		width: 900,
-		height: 600
+		width: 1200,
+		height: 800
 	});
 
 	win.loadURL(`file://${__dirname}/index.html`);
@@ -62,8 +62,8 @@ ipcMain.on('show-translate-dialog', (event, arg) => {
 					frame: false, 
 					resizable: true, 
 					show: false, 
-					height: 190, 
-					width: 360};
+					height: 250, //190
+					width: 500}; //360
 					
 	translateWindow = new electron.BrowserWindow(params);
 	translateWindow.loadURL('file://' + __dirname + '/translate.html');
@@ -72,7 +72,19 @@ ipcMain.on('show-translate-dialog', (event, arg) => {
 		});
 
 	translateWindow.webContents.on('did-finish-load', () => {
-		translateWindow.webContents.send('clipboard-content', clipboard.readText('selection'));
+		//clipboard.readText('selection') returns clipboard content even
+		// if nothing is selected.  We only want to supply a default translate
+		// phrase if there is a bonafide selection.
+		let content;
+		const clip = clipboard.readText();
+		const selection = clipboard.readText('selection');
+
+		if (clip != selection || clip == '') {
+			content = selection;
+		} else {
+			content = "";
+		}
+		translateWindow.webContents.send('clipboard-content', content);
 	})
   
 
@@ -99,8 +111,8 @@ ipcMain.on('show-addedit-dialog', (event, arg) => {
 					frame: false, 
 					resizable: true, 
 					show: false, 
-					height: 190, 
-					width: 360};
+					height: 250, 
+					width: 500};
 			
 	let url = 'file://' + __dirname + '/addedit.html';
 	if (arg) /*edit dialog*/	{
