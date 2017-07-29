@@ -14,9 +14,13 @@
   
   <script>
     const Logger = require('./js/log');
-    const ipcRenderer = require('electron').ipcRenderer;
+    const logger = new Logger();
 
-    logger = new Logger('./js/translate');
+    const ipcRenderer = require('electron').ipcRenderer;
+    //const logger = require('electron').remote.getGlobal('logger');
+
+
+    
     
     require('electron').ipcRenderer.on('clipboard-content', (event, message) => {
             $('#phrase').val(message);
