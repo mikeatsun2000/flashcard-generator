@@ -9,16 +9,26 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
    <link rel="stylesheet" href="css/dialog.css">
   
   <script>
+   // const Logger = require('./js/log');
+    //const logger = (new Logger('addedit.html'));
+    const {dialog} = require('electron').remote; 
     const Logger = require('./js/log');
-    const logger = (new Logger('addedit.html'));
-    let params;
+    const logger = new Logger();
 
-    let url;
+    const fs = require('fs');
+
+    const mainWindow = require('electron').remote.getGlobal('mainWindow');
+    //const logger = require('electron').remote.getGlobal('logger');
+
+    let eBookParams = {'isEbook':false};
+
     $(function() {
+
         logger.log('location.href=' + location.href);
         const { URL } = require('url');
         url = new URL(location.href);
@@ -26,20 +36,42 @@
 
         logger.log('id=' + url.searchParams.get('id') + 
                    ' name=' + url.searchParams.get('name') +
-                   ' url=' + url.searchParams.get('url'));
+                   ' url=' + url.searchParams.get('url') +
+                   ' eBook=' + url.searchParams.get('eBook'));
 
-        if (url.searchParams.get('id')) {
+        if (url.searchParams.get('id')) /*edit dialog*/ {
             $('#dialog-title').text('Edit App');
             $('#app-name').val(url.searchParams.get('name'));
             $('#app-url').val(url.searchParams.get('url'));
-        } 
+           
+        }
+        
+
+        if (url.searchParams.get('eBook') == null) {
+            $('#show-open-dialog').remove();
+            $('#app-url').removeAttr('disabled');
+            
+        } else {
+            eBookParams['isEbook'] = true;
+            $('#dialog-title').text('Choose eBook');
+            $('#url-input').text('File');
+           
+        }
         
     });
 
 
-    var okHandler = function() {
-        logger.log('okHandler');
-        const args = {'name':$('#app-name').val(), 'url':$('#app-url').val() };
+    const okHandler = function() {
+        let appUrl;
+        const isEbook = eBookParams['isEbook'];
+
+        if (eBookParams['isEbook']) {
+            appUrl = eBookParams['targetUrl'];
+        } else {
+            appUrl = $('#app-url').val();
+        }
+
+        const args = {'name':$('#app-name').val(), 'url':appUrl, 'isEbook':isEbook };
         if ( url.searchParams.get('id')) {
             args['id'] =  url.searchParams.get('id');
         }
@@ -47,11 +79,63 @@
                                              args)
     };
 
-    var cancelHandler = function() {
-        logger.log('cancelHandler');
+    const cancelHandler = function() {
+    
         require('electron').ipcRenderer.send('dismiss-addedit-dialog', "");
     };
+
+
+    const fileButtonHandler = async () =>  {
+        eBookParams['eBookPath'] = await openDialogHandler();
+        //eBookParams['targetUrl'] = await processEbookFile(eBookParams['eBookPath']);￼
+        eBookParams['targetUrl'] = await processEbookFile(eBookParams['eBookPath']);
         
+        $('#app-url').val(eBookParams['mangledName']);
+        
+    }
+
+      
+    const openDialogHandler = function () {
+        return new Promise((resolve, reject) =>  {
+            try {
+                dialog.showOpenDialog({properties: ['openFile'], 
+                                    parent: mainWindow,
+                                    filters: [{name: 'eBooks', extensions: ['epub']}],
+                                    defaultPath: __dirname + '/reader/ebooks'} , (fileNames) => {
+                                        resolve(fileNames[0]);
+                                    });
+            } catch (e)  {
+                logger.log(e.message);
+                reject(e);
+            }                     
+        });                       
+    };
+
+
+    //conpute mangled name for unzipped file.
+    //check for existence of directory with mangled name in ebooks folder
+    //unzip eBook if necessary and copy to ebook directory
+
+    const processEbookFile = (eBookPath) =>  {
+    
+        const components = require('path').parse(eBookPath);
+
+        eBookParams['eBookPath'] = eBookPath;
+        eBookParams['mangledName'] = components['name'].replace(/ /g, '-');
+        eBookParams['targetPath']  = __dirname + '/reader/ebooks/' + eBookParams['mangledName'];
+        const targetUrl = 'http://localhost:3001/reader/index.html?ebookFile=' + eBookParams['mangledName'] ;
+
+        try {
+            fs.accessSync(targetPath , fs.constants.F_OK);
+            return targetUrl;
+        } catch (error) {
+           //zip file does not exist in eBooks directory.  Create one there
+           require('node-zip-dir').unzip(eBookPath, eBookParams['targetPath'] ); 
+           return targetUrl;
+        }
+        
+    }       
+      
 </script>
 
 </head>
@@ -60,13 +144,17 @@
 	<div id="dialog-bg">
        	<div id="dialog-title">Add App</div>
            <div id="dialog-description">
-             <div class='dialog-description-row'>
+             <div class='row dialog-description-row'>
                 <label id='name-input' for = 'app-name'>Name&nbsp;&nbsp;</label>
                 <input type='text' id='app-name'></input>
              </div>
-             <div class='dialog-description-row'>
+             <div class='row dialog-description-row'>
                 <label id='url-input' for = 'app-url'>URL&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type='text' id='app-url'></input>
+                <input type='text' id='app-url' disabled></input>
+                <!--<a href='#'  id='show-open-dialog' class= 'green button' 
+                onClick= 'openDialogHandler()'><i class='icon-file-text-alt'></i></a>-->
+                <a id = 'show-open-dialog' class="btn btn-small btn-info" href="#" onClick= 'fileButtonHandler()'>
+                            <i class="fa fa-file-text-o"></i> </a>
              </div>
            </div>
 
