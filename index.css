@@ -18,8 +18,7 @@ body {
 header {
 	position: absolute;
 	width: 500px;
-	height: 250p
-	x;
+	height: 250px;
 	top: 50%;
 	left: 50%;
 	margin-top: -125px;
@@ -46,7 +45,7 @@ header h1 {
   }
 
 
-  .nav-header {
+ .nav-header {
 	  font-weight: bold;
   }
 
@@ -77,7 +76,7 @@ header h1 {
     
 }
 
-#button1 {
+#button-back {
 	top: 0;
 	float:left;
 	height:100%;
@@ -89,7 +88,7 @@ header h1 {
 	background-color: green;
 }
 
-#button2 {
+#button-card {
 	top: 0;
 	float:left;
 	height:100%;
@@ -99,8 +98,14 @@ header h1 {
 	position:relative;
 	display:inherit;
 	background-color:blue;
+}
 
-	
+#dialog-description {
+	width:100px;
+}
+
+#show-open-dialog {
+	display: none;
 }
 
 
