@@ -32,11 +32,15 @@
 
 <script>
  
-  const indexLogger = new (require('./js/log'))('index.html');
+  //const indexLogger = new (require('./js/log'))('index.html');
+  //const logger = require('electron').remote.getGlobal('logger');
+  //const Logger = require('./js/log');
+  //const logger = new Logger();
+
   
   require('electron').ipcRenderer.on('load-translate-phrase', (event, arg)=> {
 
-      indexLogger.log('load-translate-phrase received, arg = ' +arg);
+      logger.log('load-translate-phrase received, arg = ' +arg);
       $('#dict-view').attr('src' , 'http://localhost:3001/translate/' + arg);
       $('#button-bar').show();
       $('#dict-view').removeClass('hide' );
@@ -45,11 +49,21 @@
   });
 
   require('electron').ipcRenderer.on('load-addedit-args', (event, arg) => {
-    indexLogger.log('load-addedit-args received, arg = ' +arg);
+    logger.log('load-addedit-args received, arg = ' +arg);
+    logger.log('id=' + arg['id'])
+    logger.log('name=' + arg['name']);
+    logger.log('url=' + arg['url'])
+    logger.log('isEbook' + arg['isEbook']);
+    let isEbook;
+    if (arg['isEbook']) {
+      isEbook = true;
+    } else {
+      isEbook = false;
+    }
     if (arg['id']) {
       App.editApp(arg)
     } else {
-      App.addApp(arg);
+      App.addApp(arg, isEbook);
     }
   });
 
@@ -58,7 +72,8 @@
 
 <body>
 <div style="position: absolute; left: 10px; right: 10px; top: 10px; bottom: 10px;">
-  <div class="well" style="float: left; width: 210px; padding: 8px;">
+  <div class="well" style="float: left; width: 210px; padding:
+   8px;">
     <ul class="nav nav-list" id="sidebar">
       <li class="nav-header">Apps</li>
       <li class="active" >
@@ -67,7 +82,7 @@
      
       <li class="nav-header" id = 'applist-end' >Menu</li>
       <li>
-          <a href='#' id = 'add-item' onclick = 'App.addAppItem()'><i class = 'fa fa-plus'></i>&nbsp;Add App</a></li>
+          <a href='#' id = 'add-item' class = 'context-menu-addapp'><i class = 'fa fa-plus'></i>&nbsp;Add App</a></li>
       </li>
       <li><a href='#'  onclick="App.translate()"><i class="fa fa-book"></i>&nbsp;Translate</a></li> 
       <li><a href="#"  onclick="App.about()"><i class="fa fa-flag"></i>&nbsp;About</a></li>
@@ -86,8 +101,14 @@
             style= 'position: relative; height: 790px; width: 950px;'>
         </webview>
         <div id='button-bar'>
-          <div id = 'button1' onclick = 'button1Handler();'>1</div>
-          <div id = 'button2'><img src = 'img/download.png'</div>
+          <!--<div id = 'button-back' onclick = 'buttonBackHandler();'>1</div>
+          <div id = 'button-card'><img src = 'img/download.png'</div>-->
+          <a class="btn btn-danger" href="#" onclick = 'buttonBackHandler();'>
+                  <i class="fa fa-trash-o fa-lg"></i> Back</a>
+          <a class="btn btn-primary" href="#">
+                  <i class="fa fa-bolt fa-lg"></i>Flashcard</a>
+
+
         
 
         </div>
@@ -101,8 +122,12 @@
 
 <script>
 
-function button1Handler() {
+function buttonBackHandler() {
   App.setApp(App.activeApp, App.activeUrl);
+}
+
+function buttonCardHandler() {
+  
 }
 
 
@@ -128,23 +153,52 @@ $.contextMenu({
               const url = aElement.getAttribute('app-url');
               logger.log('name=' + name + ' url=' +url);
               App.editAppItem(name, url);
-            } else if (key === 'delete') {
+            } else if (key === 'delete') {  
               App.deleteAppItem(liElement);
             }
         },
 
         items: {
-            "edit": {name: "Edit", icon: "edit"} ,
+            "edit": {name: "Edit", icon: "edit",    
+                     disabled: function(key, opt) { 
+                       logger.log('classes=' + this.attr('class').split(/\s+/));
+                       
+                        if ( this.attr('class').split(/\s+/).includes('context-menu-edit-hidden') ) {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      }} ,
             "delete": {name:"Delete", icon: "delete"}
         }
      });
 
   });
 
+  $.contextMenu({
+       selector: '.context-menu-addapp',
+       trigger: 'left', 
+       callback: function(key, options) {
+          if (key === 'website') {
+              logger.log('app chosen');
+              App.addAppItem();
+          } else if (key  === 'ebook') {
+              logger.log('ebook chosen');
+              App.addEbookItem();
+          }
+       }, 
+
+       items: {
+         'website': {name: 'WebSite', icon: 'fa-globe'},
+         'ebook': {name: 'eBook', icon: 'fa-book'}
+       }
+
+  });
+
   /*
   App.addApp({name: 'Duolingo', url: 'http://www.duolingo.com/'});
   App.addApp({name:'Fluencia', url:'https://app.fluencia.com/'});  
-  */$
+  */
   App.loadApps();
   
 
