@@ -1,0 +1,61 @@
+<HTML>
+<HEAD>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<STYLE>
+
+body {
+    background-color: blue;
+}
+
+#phrase {
+    width: 500px;
+    height: 77px;
+    font-size:64px;
+    font-family: 'Arial';
+    color: white;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align : center;
+    
+}
+
+#phrase-input {
+    width: 500px;
+    height: 200px;
+    font-size: 64px;
+    font-family: 'Arial';
+    color: white;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+    background-color: blue;
+}
+
+</STYLE>
+<SCRIPT>
+
+    let  state = 'input';
+    $(document).keydown( (event) => {
+        if (event.key === 'Enter' && state == 'input')  {
+            state = 'display';
+            $('#phrase').text($('#phrase-input').val());
+            $('#phrase-input').hide();
+            $('#phrase').show();
+        }
+    })
+
+</SCRIPT>
+</HEAD>
+<BODY>
+<DIV id='phrase' hidden>192.168.222.55</DIV>
+<INPUT id=phrase-input type = 'text'></input>
+</BODY>
+</HTML>
