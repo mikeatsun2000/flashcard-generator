@@ -78,8 +78,9 @@
 #url-label {
     width:15%;
 }
+
 #app-url {
-    width:85%;
+    width:75%;
 }
 #dialog-description {
     width: 100%; //490px
