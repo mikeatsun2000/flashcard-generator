@@ -8,7 +8,8 @@ const console = require('console');
 const mainConsole= new console.Console(process.stdout, process.stderr);
 
 const Logger = require('./js/log');
-const logger = new Logger('index.js');
+const logger = new Logger();
+
 
 
 // adds debug features like hotkeys for triggering dev tools and reload
@@ -24,6 +25,7 @@ function onClosed() {
 	// dereference the window
 	// for multiple windows store them in an array
 	mainWindow = null;
+	global.mainWindow = null;
 }
 
 function createMainWindow() {
@@ -46,12 +48,14 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
 	if (!mainWindow) {
-		mainWindow = createMainWindow();
+		mainWindow = createMainWindow()
+		global.mainWindow = mainWindow;
 	}
 });
 
 app.on('ready', () => {
 	mainWindow = createMainWindow();
+	global.mainWindow = mainWindow;
 });
 
 ipcMain.on('show-translate-dialog', (event, arg) => {
@@ -104,6 +108,7 @@ ipcMain.on('dismiss-translate-dialog', (event, arg) => {
 
 
 ipcMain.on('show-addedit-dialog', (event, arg) => {
+	
 	logger.log('showing addeditapp dialog');
 	const params = {toolbar: false, 
 					parent:mainWindow, 
@@ -115,10 +120,17 @@ ipcMain.on('show-addedit-dialog', (event, arg) => {
 					width: 500};
 			
 	let url = 'file://' + __dirname + '/addedit.html';
-	if (arg) /*edit dialog*/	{
-		url += ('?id=' + arg['id'] + '&name=' + arg['name'] + '&url=' + arg['url']);
+	if (arg) {
+		if (arg['id']) /*edit dialog*/	{
+				url += ('?id=' + arg['id'] + '&name=' + arg['name'] + '&url=' + arg['url']);
+		}
+
+		if (arg['eBook']) {
+			url += '?eBook=true';
+		} 
 	}
-	logger.log('url=' + url);
+
+
 
 	addEditWindow = new electron.BrowserWindow(params);
 	addEditWindow.loadURL(url);
@@ -131,7 +143,9 @@ ipcMain.on('show-addedit-dialog', (event, arg) => {
 
 ipcMain.on('dismiss-addedit-dialog', (event, arg)=> {
 	logger.log('dismiss-addedit-dialog - arg=' + arg);
-
+	logger.log('name=' + arg['name'] + ' url=' + arg['url']);
+	logger.log('isEbook=' + arg['isEbook']);
+	
 	if (arg != "") {
 		mainWindow.webContents.send('load-addedit-args', arg);
 	}
