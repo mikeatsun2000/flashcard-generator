@@ -3,15 +3,18 @@ const favicon = require('favicon');
 const nodeConsole = require('console');
 const {remote, ipcRenderer,clipboard} = require('electron');
 const {Menu, BrowserWindow, MenuItem, shell} = remote;
-const http = require('http');
 const {normalize} = require('path');
 const Logger = require('./js/log');
+const logger = new Logger();
 const Domfilter = require('./js/domfilter');
 const Database =  require('./js/db');
-const logger = new Logger('js/app.js');
+
 
 let domfilter = new Domfilter(3001);
 let db = new Database(__dirname + '/db/')
+
+//const logger = require('electron').remote.getGlobal('logger');
+
 
 let activeApp = 'home';
 let activeUrl = 'home.html';
@@ -20,6 +23,7 @@ App =  {
 
   activeApp: 'home',
   activeUrl: 'home.html',
+
   // show "about" window
   about: function() {
     const params = {toolbar: false, resizable: false, show: true, height: 150, width: 400};
@@ -67,22 +71,31 @@ App =  {
     ipcRenderer.send('show-addedit-dialog');
   },
 
+  addEbookItem() {
+    ipcRenderer.send('show-addedit-dialog', {'eBook': true  });
+  },
+
   editAppItem:  function(name, url) {
     const id = 'id-' + name.replace(/ /g, '-');
     logger.log('in App.editApp id=' + id);
     ipcRenderer.send('show-addedit-dialog', {'id': id,'name': name, 'url': url});
   }, 
 
-  addApp: function(args) {
+  addApp: function(args, disableEdit) {
+    
     const name = args['name'];
     const appUrl = args['url'];
+    logger.log('name=' + name + ' url=' +appUrl);
+    logger.log('disableEdit=' + disableEdit);
+
+    
 
     favicon(appUrl, (err, iconUrl)=>{
-
+      logger.log('addApp')
       if (err) {
         logger.log(err.message);
       } else {
-        
+        logger.log('else case')
         //construct listiem
         // <i> element
         const iElement = document.createElement('i');      
@@ -115,10 +128,21 @@ App =  {
         // <li> item
         const liElement = document.createElement('li');
         liElement.setAttribute('id', 'id-' + name.replace(/ /g, "-"));
-        liElement.className = "context-menu-editapp"
+        if (!disableEdit) {
+          liElement.className = "context-menu-editapp";
+        } else {
+          liElement.className = "context-menu-editapp context-menu-edit-hidden"
+        }
         liElement.appendChild(aElement);
 
-        db.addApp(name, appUrl, $(liElement).html(), (err, doc)=> { 
+        let typ;
+        if (disableEdit) {
+          typ = 'ebook';
+        } else {
+          typ = 'app';
+        }
+
+        db.addApp(name, appUrl, $(liElement).html(), typ, (err, doc)=> { 
             if (err) {
               logger.log(err.message);
             } else {
@@ -137,6 +161,11 @@ App =  {
                .addClass('context-menu-editapp')
                .attr('id', 'id-' + doc['name'])
                .html(doc['html']);
+
+               if (doc['type'] === 'ebook') {
+                  liItem.addClass('context-menu-edit-hidden');
+               }
+               
 
                const aElement = $(":first-child", liItem);
                aElement.on('click', (event) => {
@@ -194,4 +223,4 @@ App =  {
 
 
 
-module.exports = App;
+module.exports = App;  $('#app-url').val(targetUrl);
