@@ -1,0 +1,260 @@
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="PrimaryID" version="2.0">
+
+	<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+
+		<dc:title>Cuchillo de agua</dc:title>
+
+		<dc:identifier id="PrimaryID" opf:scheme="ISBN">9788415831969</dc:identifier>
+
+		<dc:language>es</dc:language>
+
+		<dc:creator opf:file-as="Paolo Bacigalupi" opf:role="aut">Paolo Bacigalupi</dc:creator>
+
+		<dc:publisher>Penguin Random House Grupo Editorial España</dc:publisher>
+
+		<dc:source>Penguin Random House Grupo Editorial</dc:source>
+
+		<dc:date opf:event="ops-publication">2016-05-05</dc:date>
+
+    <meta content="id_1" name="cover"/>
+
+  <description xmlns="http://purl.org/dc/elements/1.1/">&lt;p&gt;&lt;B&gt;Una escalofriante aventura futurista que arroja nueva luz a nuestra forma de vivir, &lt;I&gt;Cuchillo de agua&lt;/I&gt; es la primera novela adulta de Paolo Bacigalupi después de la aclamadísima, multipremiada e internacionalmente exitosa &lt;I&gt;La chica mecánica&lt;/I&gt;.&lt;/B&gt;&lt;/P&gt; &lt;p&gt;&lt;B&gt;LÉELA ANTES DE QUE LA REALIDAD SUPERE LA FICCIÓN.&lt;/B&gt;&lt;/P&gt; &lt;p&gt;&lt;B&gt;&lt;I&gt;Cuando el río Colorado se seca, el sur de Estados Unidos se convierte en el escenario desértico de una guerra por el agua.&lt;/I&gt;&lt;/B&gt;&lt;/P&gt; &lt;P&gt;En un futuro no muy lejano, tras siglos de sobreexplotación, el río Colorado está secándose. La catástrofe obliga a miles de ciudadanos a emigrar a zonas más fértiles de Estados Unidos, pero los estados deciden construir barreras para impedir la marea de refugiados que se les viene encima.&lt;/P&gt; &lt;P&gt;A medida que la sequía se extiende y se prolonga, el campo y las ciudades se convierten en páramos sin ley, presas de especuladores que empiezan a comerciar con la desesperación de los seres humanos.&lt;/P&gt; &lt;P&gt;En medio de...</description>
+</metadata>
+
+	<manifest>
+
+		<!-- Content Documents -->
+
+		
+		
+		<item href="images/image_extract1_1.jpg" id="id_11" media-type="image/jpeg"/>
+		
+		<item href="images/Image_005.jpg" id="id_10" media-type="image/jpeg"/>
+		
+		<item href="images/Image_004.jpg" id="id_9" media-type="image/jpeg"/>
+		
+		<item href="images/Image_003.jpg" id="id_8" media-type="image/jpeg"/>
+		
+		<item href="images/Image_002.jpg" id="id_7" media-type="image/jpeg"/>
+
+		<item href="images/Image_001.jpg" id="id_6" media-type="image/jpeg"/>
+		
+		<item href="images/portadilla.jpg" id="id_5" media-type="image/jpeg"/>
+
+		<item href="images/chinos_2.jpg" id="id_4" media-type="image/jpeg"/>
+
+		<item href="images/chinos_1.jpg" id="id_3" media-type="image/jpeg"/>
+
+		<item href="images/penguin.jpg" id="id_2" media-type="image/jpeg"/>
+
+		<item href="images/cover.jpg" id="id_1" media-type="image/jpeg"/>
+
+
+				<item href="portada.htm" id="id_portada" media-type="application/xhtml+xml"/>
+
+		<item href="portadilla.htm" id="id_portadilla" media-type="application/xhtml+xml"/>
+
+		<item href="ncl_indice.htm" id="id_ncl_indice" media-type="application/xhtml+xml"/>
+
+		<item href="0001_0000.htm" id="id_0001_0000" media-type="application/xhtml+xml"/>
+
+		<item href="1_0002_0000.htm" id="id_1_0002_0000" media-type="application/xhtml+xml"/>
+
+		<item href="2_0003_0000.htm" id="id_2_0003_0000" media-type="application/xhtml+xml"/>
+
+		<item href="3_0004_0000.htm" id="id_3_0004_0000" media-type="application/xhtml+xml"/>
+
+		<item href="4_0005_0000.htm" id="id_4_0005_0000" media-type="application/xhtml+xml"/>
+
+		<item href="5_0006_0000.htm" id="id_5_0006_0000" media-type="application/xhtml+xml"/>
+
+		<item href="6_0007_0000.htm" id="id_6_0007_0000" media-type="application/xhtml+xml"/>
+
+		<item href="7_0008_0000.htm" id="id_7_0008_0000" media-type="application/xhtml+xml"/>
+
+		<item href="8_0009_0000.htm" id="id_8_0009_0000" media-type="application/xhtml+xml"/>
+
+		<item href="9_0010_0000.htm" id="id_9_0010_0000" media-type="application/xhtml+xml"/>
+
+		<item href="10_0011_0000.htm" id="id_10_0011_0000" media-type="application/xhtml+xml"/>
+
+		<item href="11_0012_0000.htm" id="id_11_0012_0000" media-type="application/xhtml+xml"/>
+
+		<item href="12_0013_0000.htm" id="id_12_0013_0000" media-type="application/xhtml+xml"/>
+
+		<item href="13_0014_0000.htm" id="id_13_0014_0000" media-type="application/xhtml+xml"/>
+
+		<item href="14_0015_0000.htm" id="id_14_0015_0000" media-type="application/xhtml+xml"/>
+
+		<item href="15_0016_0000.htm" id="id_15_0016_0000" media-type="application/xhtml+xml"/>
+
+		<item href="16_0017_0000.htm" id="id_16_0017_0000" media-type="application/xhtml+xml"/>
+
+		<item href="17_0018_0000.htm" id="id_17_0018_0000" media-type="application/xhtml+xml"/>
+
+		<item href="18_0019_0000.htm" id="id_18_0019_0000" media-type="application/xhtml+xml"/>
+
+		<item href="19_0020_0000.htm" id="id_19_0020_0000" media-type="application/xhtml+xml"/>
+
+		<item href="20_0021_0000.htm" id="id_20_0021_0000" media-type="application/xhtml+xml"/>
+
+		<item href="21_0022_0000.htm" id="id_21_0022_0000" media-type="application/xhtml+xml"/>
+
+		<item href="22_0023_0000.htm" id="id_22_0023_0000" media-type="application/xhtml+xml"/>
+
+		<item href="23_0024_0000.htm" id="id_23_0024_0000" media-type="application/xhtml+xml"/>
+
+		<item href="24_0025_0000.htm" id="id_24_0025_0000" media-type="application/xhtml+xml"/>
+
+		<item href="25_0026_0000.htm" id="id_25_0026_0000" media-type="application/xhtml+xml"/>
+
+		<item href="26_0027_0000.htm" id="id_26_0027_0000" media-type="application/xhtml+xml"/>
+
+		<item href="27_0028_0000.htm" id="id_27_0028_0000" media-type="application/xhtml+xml"/>
+
+		<item href="28_0029_0000.htm" id="id_28_0029_0000" media-type="application/xhtml+xml"/>
+
+		<item href="29_0030_0000.htm" id="id_29_0030_0000" media-type="application/xhtml+xml"/>
+
+		<item href="30_0031_0000.htm" id="id_30_0031_0000" media-type="application/xhtml+xml"/>
+
+		<item href="31_0032_0000.htm" id="id_31_0032_0000" media-type="application/xhtml+xml"/>
+
+		<item href="32_0033_0000.htm" id="id_32_0033_0000" media-type="application/xhtml+xml"/>
+
+		<item href="33_0034_0000.htm" id="id_33_0034_0000" media-type="application/xhtml+xml"/>
+
+		<item href="34_0035_0000.htm" id="id_34_0035_0000" media-type="application/xhtml+xml"/>
+
+		<item href="35_0036_0000.htm" id="id_35_0036_0000" media-type="application/xhtml+xml"/>
+
+		<item href="36_0037_0000.htm" id="id_36_0037_0000" media-type="application/xhtml+xml"/>
+
+		<item href="37_0038_0000.htm" id="id_37_0038_0000" media-type="application/xhtml+xml"/>
+
+		<item href="38_0039_0000.htm" id="id_38_0039_0000" media-type="application/xhtml+xml"/>
+
+		<item href="39_0040_0000.htm" id="id_39_0040_0000" media-type="application/xhtml+xml"/>
+
+		<item href="40_0041_0000.htm" id="id_40_0041_0000" media-type="application/xhtml+xml"/>
+
+		<item href="41_0042_0000.htm" id="id_41_0042_0000" media-type="application/xhtml+xml"/>
+
+		<item href="42_0043_0000.htm" id="id_42_0043_0000" media-type="application/xhtml+xml"/>
+
+		<item href="43_0044_0000.htm" id="id_43_0044_0000" media-type="application/xhtml+xml"/>
+
+		<item href="44_0045_0000.htm" id="id_44_0045_0000" media-type="application/xhtml+xml"/>
+
+		<item href="45_0046_0000.htm" id="id_45_0046_0000" media-type="application/xhtml+xml"/>
+
+		<item href="46_0047_0000.htm" id="id_46_0047_0000" media-type="application/xhtml+xml"/>
+
+		<item href="47_0048_0000.htm" id="id_47_0048_0000" media-type="application/xhtml+xml"/>
+
+		<item href="Agradecimientos_0049_0000.htm" id="id_Agradecimientos_0049_0000" media-type="application/xhtml+xml"/>
+
+		<item href="Sobre_este_libro_0050_0000.htm" id="id_Sobre_este_libro_0050_0000" media-type="application/xhtml+xml"/>
+
+		<item href="Sobre_el_autor_0051_0000.htm" id="id_Sobre_el_autor_0051_0000" media-type="application/xhtml+xml"/>
+
+		<item href="Creditos_0052_0000.htm" id="id_Creditos_0052_0000" media-type="application/xhtml+xml"/>
+
+		<item href="corporativa.htm" id="id_corporativa" media-type="application/xhtml+xml"/>
+
+      
+
+
+		<!-- CSS Style Sheets -->
+
+		<item href="css/global.css" id="global-css" media-type="text/css"/>
+
+		<!-- NCX -->
+
+		<item href="TablaContenidos.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
+
+		<!-- Otros -->
+		<item fallback="global-css" href="css/page-template.xpgt" id="template" media-type="application/vnd.adobe-page-template+xml"/>
+
+	</manifest>
+
+	<spine toc="ncx">
+
+	<itemref idref="id_portada" linear="yes"/>
+	<itemref idref="id_portadilla" linear="yes"/>
+	<itemref idref="id_corporativa" linear="yes"/>
+	
+	<itemref idref="id_0001_0000" linear="yes"/>
+	<itemref idref="id_1_0002_0000" linear="yes"/>
+	<itemref idref="id_2_0003_0000" linear="yes"/>
+	<itemref idref="id_3_0004_0000" linear="yes"/>
+	<itemref idref="id_4_0005_0000" linear="yes"/>
+	<itemref idref="id_5_0006_0000" linear="yes"/>
+	<itemref idref="id_6_0007_0000" linear="yes"/>
+	<itemref idref="id_7_0008_0000" linear="yes"/>
+	<itemref idref="id_8_0009_0000" linear="yes"/>
+	<itemref idref="id_9_0010_0000" linear="yes"/>
+	<itemref idref="id_10_0011_0000" linear="yes"/>
+	<itemref idref="id_11_0012_0000" linear="yes"/>
+	<itemref idref="id_12_0013_0000" linear="yes"/>
+	<itemref idref="id_13_0014_0000" linear="yes"/>
+	<itemref idref="id_14_0015_0000" linear="yes"/>
+	<itemref idref="id_15_0016_0000" linear="yes"/>
+	<itemref idref="id_16_0017_0000" linear="yes"/>
+	<itemref idref="id_17_0018_0000" linear="yes"/>
+	<itemref idref="id_18_0019_0000" linear="yes"/>
+	<itemref idref="id_19_0020_0000" linear="yes"/>
+	<itemref idref="id_20_0021_0000" linear="yes"/>
+	<itemref idref="id_21_0022_0000" linear="yes"/>
+	<itemref idref="id_22_0023_0000" linear="yes"/>
+	<itemref idref="id_23_0024_0000" linear="yes"/>
+	<itemref idref="id_24_0025_0000" linear="yes"/>
+	<itemref idref="id_25_0026_0000" linear="yes"/>
+	<itemref idref="id_26_0027_0000" linear="yes"/>
+	<itemref idref="id_27_0028_0000" linear="yes"/>
+	<itemref idref="id_28_0029_0000" linear="yes"/>
+	<itemref idref="id_29_0030_0000" linear="yes"/>
+	<itemref idref="id_30_0031_0000" linear="yes"/>
+	<itemref idref="id_31_0032_0000" linear="yes"/>
+	<itemref idref="id_32_0033_0000" linear="yes"/>
+	<itemref idref="id_33_0034_0000" linear="yes"/>
+	<itemref idref="id_34_0035_0000" linear="yes"/>
+	<itemref idref="id_35_0036_0000" linear="yes"/>
+	<itemref idref="id_36_0037_0000" linear="yes"/>
+	<itemref idref="id_37_0038_0000" linear="yes"/>
+	<itemref idref="id_38_0039_0000" linear="yes"/>
+	<itemref idref="id_39_0040_0000" linear="yes"/>
+	<itemref idref="id_40_0041_0000" linear="yes"/>
+	<itemref idref="id_41_0042_0000" linear="yes"/>
+	<itemref idref="id_42_0043_0000" linear="yes"/>
+	<itemref idref="id_43_0044_0000" linear="yes"/>
+	<itemref idref="id_44_0045_0000" linear="yes"/>
+	<itemref idref="id_45_0046_0000" linear="yes"/>
+	<itemref idref="id_46_0047_0000" linear="yes"/>
+	<itemref idref="id_47_0048_0000" linear="yes"/>
+	<itemref idref="id_Agradecimientos_0049_0000" linear="yes"/>
+	<itemref idref="id_Sobre_este_libro_0050_0000" linear="yes"/>
+	<itemref idref="id_Sobre_el_autor_0051_0000" linear="yes"/>
+	<itemref idref="id_Creditos_0052_0000" linear="yes"/>
+	
+	
+	<itemref idref="id_ncl_indice" linear="yes"/>
+
+
+	</spine>
+
+	<guide>
+
+		<reference href="portada.htm" title="start" type="start"/>
+
+		<reference href="portada.htm" title="Portada" type="cover"/>
+
+		<reference href="ncl_indice.htm" title="Table of Contents" type="toc"/>
+
+
+
+
+		
+	</guide>
+
+</package>
