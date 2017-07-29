@@ -2,15 +2,16 @@
 
 const Datastore = require('nedb');
 const Logger = require('./log')
-const logger = new Logger('js/db.js');
+const logger = new Logger();
+//const logger = require('electron').remote.getGlobal('logger');
+
 
 class Database {
     constructor(directory) {
         this.directory = directory;
 
         this.dbApps = new Datastore({filename: this.directory + 'apps.db'});
-        this.dbApps.ensureIndex({ fieldName: 'name', unique: true }, ()=>{})
-        ;
+        this.dbApps.ensureIndex({ fieldName: 'name', unique: true }, ()=>{});
         this.dbApps.loadDatabase((err)=> {
             if (err) {
                 logger.log(err.message);
@@ -18,8 +19,8 @@ class Database {
         })
     }
 
-    addApp(name, url, html, callback /* args: (err, newDoc*/) {
-        this.dbApps.insert({'name': name, 'url': url, 'html':html}, callback);
+    addApp(name, url, html, typ,  callback /* args: (err, newDoc*/) {
+        this.dbApps.insert({'name': name, 'url': url, 'html':html, 'type':typ}, callback);
         this.dbApps.persistence.compactDatafile();
     }
 
