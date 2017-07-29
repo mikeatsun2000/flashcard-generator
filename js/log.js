@@ -10,8 +10,8 @@ const ipcRenderer = electron.ipcRenderer;
 
 class Logger {
     
-    constructor(filename, defaultLevel) {
-        this.filename = filename;
+    constructor(defaultLevel) {
+        
         if (defaultLevel) {
             this.defaultLevel = defaultLevel;
         } else {
@@ -43,9 +43,12 @@ class Logger {
          if (level === undefined) {
             level = 0;
         }
-
+    
         if (level >= this.defaultLevel) {
-            this.writer(new Date().toString() + ' : ' + this.filename + ' : ' + mess );
+            this.writer(new Date().toString() + ' : ' + 
+                parseException(new Error()) + ' : ' 
+                + mess );
+            
         }
     }
 
@@ -55,51 +58,21 @@ class Logger {
         }
 
         if (level >= this.defaultLevel) {
-            this.writer(this.filename + '\n' +  e.stack + '\n\n');
+            this.writer(  e.stack + '\n\n');
         } 
     }
 }
 
+
+function parseException(e) {
+
+	frame = e.stack.split("\n")[2];
+	fileAndLineField = frame.split(/\s*at\s\S*\s/)[1];
+	return fileAndLineField.substring(1, fileAndLineField.length - 1).split('flashcard-generator/')[1]
+}
+
+
 module.exports = Logger;
 
-/*
-module.exports = {
-    DEBUG: 0,
-    INFO: 1,
-    WARN: 2,
 
-    // log message to console
-    log: function(mess, level) {
-        if (!level) {
-            level = 0;
-        }
 
-        if (level >= defaultLevel) {
-            mainConsole.log(relativeFilename() + '\n' + mess);
-        }  else {
-            //TODO
-        }  
-    },
-
-    printStackTrace: function(e, level ) {
-        if (!level) {
-            level = 0;
-        }
-
-        if (level >= defaultLevel) {
-            mainConsole.log(relativeFilename() + '\n' +  e.stack);
-        }  else  {
-            //TODO
-        }
-    },
-
-    setLevel: function(level) {
-        defaultLevel = level;
-    }
-}
-
-function relativeFilename() {
-    const dirLength = app.getAppPath();
-    return __filename.substring(dirLength);
-}
-*/
